@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Head -->
+<%- include('layouts/header') %>
+
+<body>
+  <!-- Navigation -->
+  <%- include('layouts/navbar') %>
+
+  <!-- Page Header -->
+  <header class="masthead" style="background-color: black;">
+    <div class="container position-relative px-4 px-lg-5">
+      <div class="row justify-content-center">
+        <div class="col-md-10 text-center">
+          <div class="page-heading">
+            <h1 class="display-5 text-white">📝 G2 Test Details</h1>
+            <span class="subheading text-light">Fill out the form below</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  
+
+  <!-- Main Content -->
+  <main class="py-5">
+    <div class="container px-4 px-lg-5">
+      <div class="row justify-content-center">
+        <div class="col-md-10 col-lg-8 col-xl-7">
+
+          <h2 class="text-center mb-4 fw-bold">🚗 Check Your Data</h2>
+
+          <!-- Alerts -->
+          <% if (success && success.length > 0) { %>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+              ✅ <%= success[0] %>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          <% } %>                    
+
+          <!-- COMBINED FORM -->
+          <form id="contactForm" action="/g2test/submit" method="POST">
+
+            <!-- Personal Information Section -->
+            <div class="card shadow-sm border-0 mb-4">
+              <div class="card-body">
+                <fieldset class="border-start border-4 border-primary ps-3">
+                  <legend class="mb-3 fw-semibold text-primary">👤 Personal Information</legend>
+
+                  <div class="mb-3">
+                    <label for="firstName" class="form-label">First Name</label>
+                    <input type="text" class="form-control" id="firstName" name="firstName" placeholder="Your first name"
+                      value="<%= user && user.firstName ? user.firstName : '' %>">
+                  </div>
+                  <div class="mb-3">
+                    <label for="lastName" class="form-label">Last Name</label>
+                    <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Your last name"
+                      value="<%= user && user.lastName ? user.lastName : '' %>">
+                  </div>
+                  <div class="mb-3">
+                    <label for="age" class="form-label">Age</label>
+                    <input type="number" class="form-control" id="age" name="age" maxlength="2" placeholder="Your age"
+                      value="<%= user && user.age ? user.age : '' %>">
+                  </div>
+                  <div class="mb-3">
+                    <label for="licenseNo" class="form-label">License Number</label>
+                    <input type="text" class="form-control" id="licenseNo" name="licenseNo" maxlength="8" placeholder="Your license number" 
+                      value="<%= user && user.licenseNo ? user.licenseNo : '' %>">
+                  </div>
+                </fieldset>
+              </div>
+            </div>
+
+            <!-- Car Information Section -->
+            <div class="card shadow-sm border-0 mb-4">
+              <div class="card-body">
+                <fieldset class="border-start border-4 border-success ps-3">
+                  <legend class="mb-3 fw-semibold text-success">🚘 Car Information</legend>
+
+                  <div class="mb-3">
+                    <label for="carMake" class="form-label">Make</label>
+                    <input type="text" class="form-control" id="carMake" name="car_information[make]" placeholder="Car make e.g Toyota" maxlength="20"
+                      value="<%= user?.car_details?.make || '' %>">
+                  </div>
+                  <div class="mb-3">
+                    <label for="carModel" class="form-label">Model</label>
+                    <input type="text" class="form-control" id="carModel" name="car_information[model]" placeholder="Car model e.g Toyota"
+                      value="<%= user?.car_details?.model || '' %>">
+                  </div>
+                  <div class="mb-3">
+                    <label for="carYear" class="form-label">Year</label>
+                    <input type="number" class="form-control" id="carYear" name="car_information[year]" placeholder="Car year e.g 2024" maxlength="4" value="<%= user?.car_details?.year || '' %>">
+                  </div>
+                  <div class="mb-3">
+                    <label for="platNo" class="form-label">Plate Number</label>
+                    <input type="text" class="form-control" id="platNo" name="car_information[platNo]" placeholder="Plate number e.g Alpha-Numeric Values" maxlength="8"
+                      value="<%= user?.car_details?.platNo || '' %>">
+                  </div>
+                </fieldset>
+              </div>
+            </div>
+
+            <!-- Appointment Selection Section -->
+            <div class="card shadow-sm border-0 mb-4">
+              <div class="card-body">
+                <fieldset class="border-start border-4 border-info ps-3">
+                  <legend class="mb-3 fw-semibold text-info">📆 Appointment Booking</legend>
+
+                  <!-- Date Picker -->
+                  <div class="mb-3">
+                    <label for="appointmentDate" class="form-label">Select Date</label>
+                    <input type="date" class="form-control" name="appointmentDate" id="appointmentDate"
+                      value="<%= selectedDate %>" onchange="this.form.submit()" required>
+                  </div>
+
+                  <!-- Time Slots -->
+                  <% if (slots && slots.length > 0) { %>
+                    <label class="form-label">Available Time Slots</label>
+                    <div class="d-flex flex-wrap gap-2 mb-3">
+                      <% slots.forEach(slot => { %>
+                        <label class="btn btn-outline-primary">
+                          <input type="radio" class="btn-check" name="appointmentId" value="<%= slot._id %>" required> <%= slot.time %>
+                        </label>
+                      <% }) %>
+                    </div>
+                  <% } else if (typeof slots !== 'undefined') { %>
+                    <p class="text-danger">No available slots for selected date.</p>
+                  <% } %>
+                </fieldset>
+              </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="text-start">
+              <button type="submit" class="btn btn-primary px-4" style="border-radius: 10px;">
+                Submit
+              </button>
+            </div>
+
+          </form>
+          <!-- END FORM -->
+
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <%- include('layouts/footer') %>
+  <!-- Scripts -->
+  <%- include('layouts/scripts') %>
+</body>
+
+</html>

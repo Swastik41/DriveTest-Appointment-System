@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Head -->
+<%- include('layouts/header') %>
+
+<body>
+  <!-- Navigation -->
+  <%- include('layouts/navbar') %>
+
+  <!-- Page Header -->
+  <header class="masthead" style="background-color: black;">
+    <div class="container position-relative px-4 px-lg-5">
+      <div class="row justify-content-center">
+        <div class="col-md-10 text-center">
+          <div class="page-heading">
+            <h1 class="display-5 text-white">🔐 Login</h1>
+            <span class="subheading text-light">Please enter your credentials</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  
+
+  <!-- Main Content -->
+  <main class="py-5">
+    <div class="container px-4 px-lg-5">
+      <div class="row justify-content-center">
+        <div class="col-md-10 col-lg-8 col-xl-7">
+
+          <div class="card shadow-sm border-0">
+            <div class="card-body">
+
+              <!-- Alert Message -->
+              <% if (message) { %>
+                <div class="alert alert-danger text-center mb-4">
+                  <%= message %>
+                </div>
+              <% } %>
+
+              <!-- Login Form -->
+              <form id="RegisterForm" action="/users/login" method="POST" data-sb-form-api-token="API_TOKEN">
+                <fieldset class="mb-4">
+                  <legend class="mb-3 fw-bold text-primary">👤 Login Information</legend>
+
+                  <div class="form-floating mb-3">
+                    <input class="form-control" id="username" name="username" type="text"
+                      placeholder="Enter your username..." required />
+                    <label for="username">Username</label>
+                    <div class="invalid-feedback">Username is required.</div>
+                  </div>
+
+                  <div class="form-floating mb-3">
+                    <input class="form-control" id="password" name="password" type="password"
+                      placeholder="Enter your password..." required />
+                    <label for="password">Password</label>
+                    <div class="invalid-feedback">Password is required.</div>
+                  </div>
+                </fieldset>
+
+                <!-- Submit Error (Hidden for now) -->
+                <div class="d-none mt-3" id="submitErrorMessage">
+                  <div class="text-center text-danger mb-3">Error submitting form!</div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="text-start">
+                  <button class="btn btn-primary px-4" id="submitButton" type="submit"
+                    style="border-radius: 10px;">Login</button>
+                </div>
+              </form>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <%- include('layouts/footer') %>
+  <!-- Scripts -->
+  <%- include('layouts/scripts') %>
+</body>
+
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Head -->
+<%- include('layouts/header') %>
+
+<body>
+  <!-- Navigation-->
+  <%- include('layouts/navbar') %>
+
+  <!-- Page Header-->
+  <header class="masthead" style="background-color: black;">
+    <div class="container position-relative px-4 px-lg-5">
+      <div class="row justify-content-center">
+        <div class="col-md-10 text-center">
+          <div class="page-heading">
+            <h1 class="display-5 text-white">🚗 Driving Test</h1>
+            <span class="subheading text-light">DriveTest Booking Kiosk</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+    
+
+  <!-- Main Content -->
+  <main class="py-5">
+    <div class="container px-4 px-lg-5">
+      <div class="row gx-4 gx-lg-5 justify-content-center">
+        <div class="col-md-10 col-lg-8 col-xl-7">
+          <div class="card shadow-sm border-0">
+            <div class="card-body text-center">
+              <h2 class="card-title">👋 Hello <%= user && user.username ? user.username : 'Guest' %></h2>
+              <p class="lead mb-3">Welcome to the Driving Test Booking Kiosk.</p>
+              <hr>
+              <p class="text-muted">Select an option below to get started:</p>
+              <div>
+                <a href="/g2test" class="btn btn-outline-primary me-2">Book G2 Test</a>
+                <a href="/gtest" class="btn btn-outline-success">Book G Test</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+ 
+
+  <!-- Footer-->
+  
+  <% if (user && (user.comment || user.passed !== null)) { %>
+    <div class="container px-4 px-lg-5 mt-5">
+      <div class="row gx-4 gx-lg-5 justify-content-center">
+        <div class="col-md-10 col-lg-8 col-xl-7">
+          <div class="card shadow-sm border-start border-4 <%= user.passed ? 'border-success' : 'border-danger' %>">
+            <div class="card-body text-center">
+              <h3 class="card-title text-primary mb-4">📋 Examiner Feedback</h3>
+  
+              <% if (user.comment) { %>
+                <p class="mb-2">
+                  <strong>💬 Comment:</strong> <span class="text-muted"><%= user.comment %></span>
+                </p>
+              <% } %>
+  
+              <% if (user.passed === true) { %>
+                <p>
+                  <strong>✅ Result:</strong>
+                  <span class="badge bg-success px-3 py-2 fs-6">Pass</span>
+                </p>
+              <% } else if (user.passed === false) { %>
+                <p>
+                  <strong>❌ Result:</strong>
+                  <span class="badge bg-danger px-3 py-2 fs-6">Fail</span>
+                </p>
+              <% } %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% } %>
+</main>
+  
+
+
+<%- include('layouts/footer') %>
+  <!-- Scripts-->
+  <%- include('layouts/scripts') %>
+</body>
+
+</html>

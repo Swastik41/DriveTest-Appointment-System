@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('layouts/header') %>
+
+<body>
+  <%- include('layouts/navbar') %>
+
+  <!-- Page Header -->
+  <header class="masthead" style="background-color: black;">
+    <div class="container position-relative px-4 px-lg-5">
+      <div class="row justify-content-center">
+        <div class="col-md-10 text-center">
+          <div class="page-heading">
+            <h1 class="display-5 text-white">🗓️ Appointments</h1>
+            <span class="subheading text-light">Add drive test slots below</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  
+  
+
+  <!-- Main Content -->
+  <main class="py-5">
+    <div class="container px-4 px-lg-5">
+      <div class="row justify-content-center">
+        <div class="col-md-10 col-lg-8 col-xl-7">
+
+          <!-- Alerts -->
+          <% if (success) { %>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+              <%= success %>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          <% } %>
+          <% if (error) { %>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+              <%= error %>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          <% } %>
+
+          <!-- Select Date Form -->
+          <div class="card mb-4 shadow-sm border-0">
+            <div class="card-body">
+              <form method="GET" action="/appointment">
+                <h1>Create Appointment</h1>
+                <div class="mb-3">
+                  <label for="date" class="form-label fw-bold">📅 Select Date</label>
+                  <input type="date" class="form-control" id="date" name="date" value="<%= date %>" required onchange="this.form.submit()">
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- Create Time Slot Form -->
+          <div class="card shadow-sm border-0">
+            <div class="card-body">
+              <form id="appointmentForm" action="/appointment/create" method="POST" data-sb-form-api-token="API_TOKEN">
+                <input type="hidden" name="date" value="<%= date %>">
+
+                <fieldset class="mb-4" style="border: 1px solid #ccc; padding: 1rem; border-radius: 0.5rem;">
+                  <legend class="fw-bold mb-3"><h4 class="mb-0">⏰ Add Appointment Slot</h4></legend>
+
+                  <label class="form-label">Available Time Slots</label>
+                  <div class="d-flex flex-wrap gap-2 mb-3">
+                    <% const times = ["09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00"]; %>
+                    <% times.forEach(t => { %>
+                      <% const isBooked = bookedTimes && bookedTimes.includes(t); %>
+                      <label class="btn <%= isBooked ? 'btn-secondary disabled' : 'btn-outline-primary' %>">
+                        <input type="radio" class="btn-check" name="time" value="<%= t %>" <%= isBooked ? 'disabled' : '' %> required> <%= t %>
+                      </label>
+                    <% }) %>
+                  </div>
+
+                  <div class="text-start">
+                    <button type="submit" class="btn btn-primary px-4" style="border-radius: 10px;">Create Slot</button>
+                  </div>
+                </fieldset>
+              </form>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <%- include('layouts/footer') %>
+  <%- include('layouts/scripts') %>
+</body>
+</html>

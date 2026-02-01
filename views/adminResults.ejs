@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('layouts/header') %>
+
+<body>
+  <%- include('layouts/navbar') %>
+
+  <header class="masthead" style="background-color: black;">
+    <div class="container position-relative px-4 px-lg-5">
+      <div class="row justify-content-center">
+        <div class="col-md-10 text-center">
+          <div class="page-heading">
+            <h1 class="display-5 text-white">📋 Driver Test Completion Summary</h1>
+            <span class="subheading text-light">Overview of all G2/G Bookings with Pass/Fail Status</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  
+
+  <main class="py-5">
+    <div class="container mb-4">
+      <form method="GET" action="/admin/results" class="row g-3 align-items-center">
+        <div class="col-auto">
+          <label for="testType" class="form-label mb-0">Test Type:</label>
+          <select name="testType" id="testType" class="form-select">
+            <option value="" <%= selectedTestType === '' ? 'selected' : '' %>>All</option>
+            <option value="G2" <%= selectedTestType === 'G2' ? 'selected' : '' %>>G2</option>
+            <option value="G" <%= selectedTestType === 'G' ? 'selected' : '' %>>G</option>
+          </select>
+        </div>
+        <div class="col-auto">
+          <label for="date" class="form-label mb-0">Date:</label>
+          <input type="date" class="form-control" name="date" id="date" value="<%= selectedDate %>">
+        </div>
+        <div class="col-auto">
+          <button type="submit" class="btn btn-primary mt-4">Filter</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="container">
+      <% if (drivers.length === 0) { %>
+        <div class="alert alert-warning text-center">
+          No drivers match the selected criteria.
+        </div>
+      <% } else { %>
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <table class="table table-hover text-center align-middle">
+              <thead class="table-dark">
+                <tr>
+                  <th>Name</th>
+                  <th>License No</th>
+                  <th>Test Type</th>
+                  <th>Comment</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% drivers.forEach(driver => { %>
+                  <tr class="<%= driver.passed ? 'table-success' : 'table-danger' %>">
+                    <td><strong><%= driver.firstName %> <%= driver.lastName %></strong></td>
+                    <td><%= driver.licenseNo %></td>
+                    <td><%= driver.testType %></td>
+                    <td><%= driver.comment || 'No comment' %></td>
+                    <td>
+                      <% if (driver.passed) { %>
+                        <span class="badge bg-success p-2">✔ Passed</span>
+                      <% } else { %>
+                        <span class="badge bg-danger p-2">✖ Failed</span>
+                      <% } %>
+                    </td>
+                  </tr>
+                <% }) %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      <% } %>
+    </div>
+  </main>
+
+  <%- include('layouts/footer') %>
+  <%- include('layouts/scripts') %>
+</body>
+</html>

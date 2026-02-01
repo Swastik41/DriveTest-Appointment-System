@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('layouts/header') %>
+
+<body>
+  <%- include('layouts/navbar') %>
+
+  <header class="masthead" style="background-color: black;">
+  <div class="container position-relative px-4 px-lg-5">
+    <div class="row justify-content-center">
+      <div class="col-md-10 text-center">
+        <div class="page-heading">
+          <h1 class="display-5 text-white">🚗 Examiner Dashboard</h1>
+          <span class="subheading text-light">Manage Driver Tests & Results</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+  <main class="py-5">
+    <div class="container">
+      <form method="GET" class="mb-4">
+        <label for="filter" class="form-label fw-bold">Filter by Test Type:</label>
+        <select name="filter" id="filter" class="form-select w-auto d-inline-block" onchange="this.form.submit()">
+          <option value="">All</option>
+          <option value="G2" <%= selectedFilter === 'G2' ? 'selected' : '' %>>G2</option>
+          <option value="G" <%= selectedFilter === 'G' ? 'selected' : '' %>>G</option>
+        </select>
+      </form>
+
+      <% if (drivers.length === 0) { %>
+        <div class="alert alert-warning">No drivers available.</div>
+      <% } %>
+
+      <% drivers.forEach(driver => { %>
+        <div class="card mb-4 shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title"><%= driver.firstName %> <%= driver.lastName %></h5>
+            <p class="mb-1"><strong>License No:</strong> <%= driver.licenseNo %></p>
+            <p class="mb-1"><strong>Car:</strong> <%= driver.car_details.make %> <%= driver.car_details.model %> - <%= driver.car_details.year %></p>
+            <form action="/examiner/update/<%= driver._id %>" method="POST">
+              <div class="mb-3">
+                <label for="comment" class="form-label"><strong>Comment</strong></label>
+                <textarea name="comment" class="form-control" rows="2" required><%= driver.comment || '' %></textarea>
+              </div>
+              <div class="mb-3">
+                <label class="form-label"><strong>Result</strong></label>
+                <select name="passed" class="form-select" required>
+                  <option value="">Select</option>
+                  <option value="true" <%= driver.passed === true ? 'selected' : '' %>>Pass</option>
+                  <option value="false" <%= driver.passed === false ? 'selected' : '' %>>Fail</option>
+                </select>
+              </div>
+              <button type="submit" class="btn btn-success">Save</button>
+            </form>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  </main>
+
+  <%- include('layouts/footer') %>
+  <%- include('layouts/scripts') %>
+</body>
+</html>
